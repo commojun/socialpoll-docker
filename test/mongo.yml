@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongopv
+  labels:
+    volume: mongopv
+spec:
+  capacity:
+    storage: 4Gi
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    server: 192.168.10.53
+    path: /home/pi/share/mongo/
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongopvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 4Gi
+  selector:
+    matchLabels:
+      volume: mongopv
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+spec:
+  selector:
+    app: mongo
+  ports:
+  - name: http
+    port: 8081
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+spec:
+  serviceName: "mongo"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: webhippie/mongodb:latest
+        volumeMounts:
+        - name: volume
+          mountPath: /var/lib/mongodb
+        ports:
+        - containerPort: 8081
+        env:
+        - name: MONGODB_ROOT_USERNAME
+          value: 'root'
+        - name: MONGODB_ROOT_PASSWORD
+          value: '0438'
+      volumes:
+      - name: volume
+        persistentVolumeClaim:
+          claimName: mongopvc
