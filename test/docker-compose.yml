@@ -1,0 +1,9 @@
+version: "3"
+services:
+  nsqd:
+    image: commojun/nsqd:0.1.2
+    environment:
+      LOOKUPD_HOST: nsqlookupd
+      PORT: 4160
+  nsqlookupd:
+    image: commojun/nsqlookupd:0.1
