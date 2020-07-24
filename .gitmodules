@@ -1,3 +1,6 @@
 [submodule "nsq"]
 	path = nsq
 	url = git@github.com:nsqio/nsq.git
+[submodule "go-web"]
+	path = go-web
+	url = git@github.com:commojun/go-web-test.git
