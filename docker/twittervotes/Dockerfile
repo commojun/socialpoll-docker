@@ -12,5 +12,5 @@ COPY build/twittervotes /usr/local/bin/twittervotes
 ENV MONGO localhost
 ENV NSQD_HOST localhost:4150
 
-CMD ["sh", "-c", "twittervotes -mongo=$MONGO -nsqd_host=$NSQD_HOST"]
+CMD ["sh", "-c", "twittervotes -mongo=$MONGO -nsqd=$NSQD_HOST"]
 

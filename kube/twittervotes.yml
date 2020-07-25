@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: twittervotes
+  labels:
+    app: twittervotes
+spec:
+  containers:
+  - name: twittervotes
+    image: commojun/socialpoll-twittervotes:0.1.4
+    envFrom:
+    - secretRef:
+        name: socialpoll

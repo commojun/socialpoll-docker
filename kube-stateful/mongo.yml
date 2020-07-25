@@ -39,7 +39,7 @@ spec:
   - name: http
     port: 27017
     targetPort: 27017
-    nodePort: 30081
+    nodePort: 30011
 ---
 apiVersion: apps/v1
 kind: StatefulSet

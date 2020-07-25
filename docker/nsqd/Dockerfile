@@ -9,7 +9,6 @@ RUN apk add --update --no-cache tzdata && \
 
 COPY build/nsqd /usr/local/bin/nsqd
 
-ENV LOOKUPD_HOST localhost
-ENV PORT 4160
+ENV NSQLOOKUPD_HOST localhost
 
-CMD ["sh", "-c", "nsqd --lookupd-tcp-address=$LOOKUPD_HOST:$PORT"]
+CMD ["sh", "-c", "nsqd --lookupd-tcp-address=$NSQLOOKUPD_HOST"]

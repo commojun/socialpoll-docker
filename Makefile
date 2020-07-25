@@ -1,7 +1,7 @@
-VERSION := 0.1.2
+VERSION := 0.1.5
 APP_ROOT=$(abspath .)
 
-.PHONY: gobuild clean image-all image-nsqd image-nsqlookupd image-twittervotes image-counter image-api image-web
+.PHONY: gobuild clean image-all image-nsqd image-nsqlookupd image-twittervotes image-counter image-api image-web mongo apply
 
 gobuild: clean build/nsqd build/nsqlookupd build/twittervotes build/counter build/api build/web
 
@@ -46,6 +46,18 @@ image-api:
 
 image-web:
 	docker buildx build -t commojun/socialpoll-web:$(VERSION) --platform linux/amd64,linux/arm/v7 --push -f docker/web/Dockerfile .
+
+mongo:
+	-kubectl delete -f ./kube-stateful
+	kubectl apply -f ./kube-stateful
+
+backup:
+	kubectl exec -it mongo-0 -- mongodump -d ballots -c polls
+	kubectl cp mongo-0:/root/dump dump
+
+apply:
+	-kubectl delete -f ./kube
+	kubectl apply -f ./kube
 
 secret:
 	-kubectl delete secret socialpoll
