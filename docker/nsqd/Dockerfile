@@ -7,9 +7,9 @@ RUN apk add --update --no-cache tzdata && \
     echo "Asia/Tokyo" > /etc/timezone && \
     apk del tzdata
 
-COPY build/nsqd-arm /usr/local/bin/nsqd
+COPY build/nsqd /usr/local/bin/nsqd
 
-ENV LOOKUPD_HOST nsqlookupd
+ENV LOOKUPD_HOST localhost
 ENV PORT 4160
 
 CMD ["sh", "-c", "nsqd --lookupd-tcp-address=$LOOKUPD_HOST:$PORT"]

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nsqd
+spec:
+  selector:
+    app: nsqd
+  ports:
+  - name: http
+    port: 4160
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nsqd
+  labels:
+    app: nsqd
+spec:
+  containers:
+  - name: nsqd
+    image: commojun/nsqd:0.1.2
+    ports:
+    - containerPort: 4160
+    envFrom:
+    - secretRef:
+        name: socialpoll

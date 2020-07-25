@@ -7,7 +7,7 @@ RUN apk add --update --no-cache tzdata && \
     echo "Asia/Tokyo" > /etc/timezone && \
     apk del tzdata
 
-COPY build/api-arm /usr/local/bin/api
+COPY build/api /usr/local/bin/api
 
 ENV ADDR :8080
 ENV MONGO localhost

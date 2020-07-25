@@ -7,7 +7,7 @@ RUN apk add --update --no-cache tzdata && \
     echo "Asia/Tokyo" > /etc/timezone && \
     apk del tzdata
 
-COPY build/web-arm /usr/local/bin/web
+COPY build/web /usr/local/bin/web
 
 ENV ADDR :8081
 ENV API localhost:8080

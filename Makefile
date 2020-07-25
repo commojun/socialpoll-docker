@@ -3,26 +3,29 @@ APP_ROOT=$(abspath .)
 
 .PHONY: gobuild clean image-all image-nsqd image-nsqlookupd image-twittervotes image-counter image-api image-web
 
-gobuild: clean build/nsqd-arm build/nsqlookupd-arm build/twittervotes-arm build/counter-arm build/api-arm build/web-arm
+gobuild: clean build/nsqd build/nsqlookupd build/twittervotes build/counter build/api build/web
 
-build/nsqd-arm:
+build/nsqd:
 	echo $(APP_ROOT)
-	cd nsq/apps/nsqd && GOOS=linux GOARCH=arm go build -o $(APP_ROOT)/build/nsqd-arm
+	cd nsq/apps/nsqd && GOOS=linux GOARCH=arm go build -o $(APP_ROOT)/build/nsqd
 
-build/nsqlookupd-arm:
-	cd nsq/apps/nsqlookupd && GOOS=linux GOARCH=arm go build -o $(APP_ROOT)/build/nsqlookupd-arm
+build/nsqlookupd:
+	cd nsq/apps/nsqlookupd && GOOS=linux GOARCH=arm go build -o $(APP_ROOT)/build/nsqlookupd
 
-build/twittervotes-arm:
-	cd go-web/socialpoll/twittervotes && GOOS=linux GOARCH=arm go build -o $(APP_ROOT)/build/twittervotes-arm
+build/twittervotes:
+	cd go-web/socialpoll/twittervotes && GOOS=linux GOARCH=arm go build -o $(APP_ROOT)/build/twittervotes
 
-build/counter-arm:
-	cd go-web/socialpoll/counter && GOOS=linux GOARCH=arm go build -o $(APP_ROOT)/build/counter-arm
+build/counter:
+	cd go-web/socialpoll/counter && GOOS=linux GOARCH=arm go build -o $(APP_ROOT)/build/counter
 
-build/api-arm:
-	cd go-web/socialpoll/api && GOOS=linux GOARCH=arm go build -o $(APP_ROOT)/build/api-arm
+build/api:
+	cd go-web/socialpoll/api && GOOS=linux GOARCH=arm go build -o $(APP_ROOT)/build/api
 
-build/web-arm:
-	cd go-web/socialpoll/web && GOOS=linux GOARCH=arm go build -o $(APP_ROOT)/build/web-arm
+build/web:
+	cd go-web/socialpoll/web && GOOS=linux GOARCH=arm go build -o $(APP_ROOT)/build/web
+
+clean:
+	rm -R build/*
 
 image-all: image-nsqd image-nsqlookupd image-twittervotes image-counter image-api image-web
 
@@ -44,11 +47,8 @@ image-api:
 image-web:
 	docker buildx build -t commojun/socialpoll-web:$(VERSION) --platform linux/amd64,linux/arm/v7 --push -f docker/web/Dockerfile .
 
-clean:
-	rm -R build/*
-
 secret:
-	kubectl delete secret socialpoll
+	-kubectl delete secret socialpoll
 	kubectl create secret generic \
 		--save-config socialpoll \
 		--from-env-file ./envfile

@@ -7,10 +7,10 @@ RUN apk add --update --no-cache tzdata && \
     echo "Asia/Tokyo" > /etc/timezone && \
     apk del tzdata
 
-COPY build/counter-arm /usr/local/bin/counter
+COPY build/counter /usr/local/bin/counter
 
 ENV MONGO localhost
-ENV NSQLOOKUPD localhost:4161
+ENV NSQLOOKUPD_CONNECT localhost:4161
 
-CMD ["sh", "-c", "counter -mongo=$MONGO -nsqlookupd=$NSQLOOKUPD"]
+CMD ["sh", "-c", "counter -mongo=$MONGO -nsqlookupd=$NSQLOOKUPD_CONNECT"]
 

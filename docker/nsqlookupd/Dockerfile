@@ -7,7 +7,7 @@ RUN apk add --update --no-cache tzdata && \
     echo "Asia/Tokyo" > /etc/timezone && \
     apk del tzdata
 
-COPY build/nsqlookupd-arm /usr/local/bin/nsqlookupd
+COPY build/nsqlookupd /usr/local/bin/nsqlookupd
 
 CMD ["nsqlookupd"]
 

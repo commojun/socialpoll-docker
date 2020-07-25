@@ -7,10 +7,10 @@ RUN apk add --update --no-cache tzdata && \
     echo "Asia/Tokyo" > /etc/timezone && \
     apk del tzdata
 
-COPY build/twittervotes-arm /usr/local/bin/twittervotes
+COPY build/twittervotes /usr/local/bin/twittervotes
 
 ENV MONGO localhost
-ENV NSQD_HOST localhost:4160
+ENV NSQD_HOST localhost:4150
 
 CMD ["sh", "-c", "twittervotes -mongo=$MONGO -nsqd_host=$NSQD_HOST"]
 
