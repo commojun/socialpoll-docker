@@ -32,7 +32,7 @@ spec:
     - secretRef:
         name: socialpoll
   - name: web
-    image: commojun/socialpoll-web:0.1.4
+    image: commojun/socialpoll-web:0.1.8
     ports:
     - containerPort: 8081
     envFrom:

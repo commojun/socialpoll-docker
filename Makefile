@@ -1,9 +1,13 @@
-VERSION := 0.1.5
+VERSION := 0.1.8
 APP_ROOT=$(abspath .)
 
-.PHONY: gobuild clean image-all image-nsqd image-nsqlookupd image-twittervotes image-counter image-api image-web mongo apply
+.PHONY: go-web-pull  gobuild clean image-all image-nsqd image-nsqlookupd image-twittervotes image-counter image-api image-web mongo apply
 
-gobuild: clean build/nsqd build/nsqlookupd build/twittervotes build/counter build/api build/web
+go-web-pull:
+	cd go-web && \
+	git pull origin master
+
+gobuild: go-web-pull clean build/nsqd build/nsqlookupd build/twittervotes build/counter build/api build/web
 
 build/nsqd:
 	echo $(APP_ROOT)
@@ -44,7 +48,7 @@ image-counter:
 image-api:
 	docker buildx build -t commojun/socialpoll-api:$(VERSION) --platform linux/amd64,linux/arm/v7 --push -f docker/api/Dockerfile .
 
-image-web:
+image-web: go-web-pull
 	docker buildx build -t commojun/socialpoll-web:$(VERSION) --platform linux/amd64,linux/arm/v7 --push -f docker/web/Dockerfile .
 
 mongo:

@@ -8,6 +8,7 @@ RUN apk add --update --no-cache tzdata && \
     apk del tzdata
 
 COPY build/web /usr/local/bin/web
+COPY go-web/socialpoll/web/public /public
 
 ENV ADDR :8081
 ENV API localhost:8080
